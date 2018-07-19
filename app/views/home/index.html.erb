@@ -1,0 +1,16 @@
+             <!-- start head bottom -->
+      <div class="bottom">
+        <div class="left">
+          <h1>흡연구역 알리미</h1>
+        </div>
+        <div class="right">
+          <!--<h1>dashboard /</h1>-->
+          <!--<a href="#">page name</a>-->
+        </div>
+      </div>
+<%= render 'map', product: @home %>
+
+  
+<% content_for 'javascript_content' do%>
+<%= javascript_include_tag params[:controller] %>
+<%end%>

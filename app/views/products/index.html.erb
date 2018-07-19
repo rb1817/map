@@ -1,0 +1,38 @@
+        <!-- start head bottom -->
+      <div class="bottom">
+        <div class="left">
+          <h1>등록하기</h1>
+        </div>
+        <div class="right">
+          <h1>dashboard /</h1>
+          <a href="#">page name</a>
+        </div>
+      </div>
+      <!-- end head bottom -->
+<div class ="container">
+<div id = "title" class = "row">
+<%@products.each do |product|%>
+<div class="card col-md-3">
+  <img class="card-img-top" src="<%= product.image_address.thumb.url%>">
+  <div class="card-body text-center">
+    <h5 class="card-title" data_id=1><span><%=product.area_type%></span></h5>
+    <p class="card-text">장소:<%=product.area_name%></p><br/>
+    위도<p class="card-text"><%=product.latitude%></p><br/>
+    경도<p class="card-text"><%=product.longitude%></p><br/>
+    내용<p class="card-text"><%=product.address%></p>
+    <%= link_to '정보보기', product_path(product), class: "btn btn-primary"%>
+  </div>
+</div>
+<%end%>
+</div>
+</div>
+<%= link_to 'New Product', new_product_path %>
+<% content_for 'javascript_content' do %>
+<%= javascript_include_tag params[:controller] %>
+<% end %>
+
+<script>
+    console.log("content_for");
+</script>    
+
+

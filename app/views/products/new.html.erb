@@ -1,0 +1,19 @@
+        <!-- start head bottom -->
+      <div class="bottom">
+        <div class="left">
+          <h1>등록하기</h1>
+        </div>
+        <div class="right">
+          <h1>dashboard /</h1>
+          <a href="#">page name</a>
+        </div>
+      </div>
+<%= render 'map', product: @product %>
+<%= render 'form', product: @product %>
+
+<%= link_to 'Back', products_path, class: ""%>
+
+  
+<% content_for 'javascript_content' do%>
+<%= javascript_include_tag params[:controller] %>
+<%end%>

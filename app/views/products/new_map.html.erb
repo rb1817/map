@@ -1,0 +1,31 @@
+        <!-- start head bottom -->
+      <div class="bottom">
+        <div class="left">
+          <h1>등록하기</h1>
+        </div>
+        <div class="right">
+          <h1>dashboard /</h1>
+          <a href="#">page name</a>
+        </div>
+      </div>
+
+(:area_type,:area_name,:address,:latitude,:longitude,:description,:image_address  
+  
+  
+<%= render 'map', product: @product %>
+
+<form action = "/product_map" method = "POST">
+    <input type = "hidden" name = "authenticity_token" value ="<%= form_authenticity_token%>">
+    <input type = "text" name ="area_name" placeholder = "제목">
+    <input type = "text" name ="address" placeholder = "주소">
+    <input type = "text" name ="description" placeholder = "내용">
+    <input type = "submit" value = "등록하기">
+</form>
+
+
+<%= link_to 'Back', products_path, class: ""%>
+
+  
+<% content_for 'javascript_content' do%>
+<%= javascript_include_tag params[:controller] %>
+<%end%>

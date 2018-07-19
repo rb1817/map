@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Temple</title>
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= stylesheet_link_tag    params[:controller], media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+      <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+      <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <section id="admin">
+    <div class="sidebar">
+    <%= render 'shared/topbar' if controller_name == 'home'  or controller_name == 'products' or controller_name == 'qnas'  or controller_name == 'notices'%>
+    <%= render 'shared/sidebar' if controller_name == 'home'  or controller_name == 'products' or controller_name == 'qnas'  or controller_name == 'notices'%>
+    </div>
+    <div class="content">
+      <div class="head">
+        <%= render 'shared/head' if controller_name == 'home' or controller_name == 'products' or controller_name == 'qnas'  or controller_name == 'notices'%>
+        <%= yield %>
+      </div>
+    </div>
+    </section>
+    <%= yield 'javascript_content'%>
+
+  </body>
+</html>

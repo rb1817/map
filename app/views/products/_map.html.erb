@@ -1,0 +1,146 @@
+<br/>
+<form>
+ &nbsp;&nbsp;&nbsp;주소 검색 : <input type="text" id="add_search" name="address" >
+ <input type="button" id="search" value="검색하기">
+</form>
+<div class ="m-3"><div id="map" style="width:100%;height:300px;z-index: 0;"></div></div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36565cb54913d6c0ac8bfc04&libraries=services"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+// 지도를 클릭한 위치에 표출할 마커입니다
+var marker = new daum.maps.Marker(); 
+// 지도에 마커를 표시합니다
+marker.setMap(map);
+// 지도에 클릭 이벤트를 등록합니다
+// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng; 
+    // 마커 위치를 클릭한 위치로 옮깁니다
+    marker.setPosition(latlng);
+    var lat = latlng.getLat();
+    var lng = latlng.getLng();
+    
+    var resultlat = document.getElementById('lat'); 
+     resultlat.value = lat;
+    var resultlng = document.getElementById('lng'); 
+     resultlng.value = lng;
+});
+
+</script>
+<script>
+
+$('#search').on('click',function(){
+    var address = $('#add_search').val();
+    console.log(address);
+    search(address);
+})
+function search(address){
+var geocoder = new daum.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch(address, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === daum.maps.services.Status.OK) {
+
+        var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+        var lat = coords.getLat();
+        var lng = coords.getLng();
+        var resultlat = document.getElementById('lat'); 
+        resultlat.value = lat;
+        var resultlng = document.getElementById('lng'); 
+        resultlng.value = lng;
+        
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        marker.setPosition(coords);
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new daum.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">정확한 위치를 집어주세요~!!</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+        
+        daum.maps.event.addListener(map, 'click', function(mouseEvent) {     
+        infowindow.close();
+    });
+    } 
+});  
+}
+</script>
+<script>
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+if (navigator.geolocation) {
+    
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude; // 위도
+        
+        var lng = position.coords.longitude; // 경도
+        
+        var resultlat = document.getElementById('lat'); 
+         resultlat.value = lat;
+        var resultlng = document.getElementById('lng'); 
+         resultlng.value = lng;
+     
+        var locPosition = new daum.maps.LatLng(lat, lng), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+        
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition, message);
+            
+      });
+    
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new daum.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition, message);
+}
+
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new daum.maps.Marker({  
+        map: map, 
+        position: locPosition,
+    }); 
+    
+    var iwContent = message, // 인포윈도우에 표시할 내용
+        iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new daum.maps.InfoWindow({
+        content : iwContent,
+        removable : iwRemoveable
+    });
+    
+    // 인포윈도우를 마커위에 표시합니다 
+    infowindow.open(map, marker);
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition); 
+    daum.maps.event.addListener(map, 'click', function(mouseEvent) {     
+        marker.setVisible(false);
+        infowindow.close();
+    });
+    $('#search').on('click',function(){
+        marker.setVisible(false);
+        infowindow.close();
+    });
+}    
+</script>

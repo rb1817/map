@@ -1,0 +1,49 @@
+
+<%= form_for(product) do |f| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+      <% product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="py-4 text-center">
+  <div class = "from-group mx-auto" style="width:200px">
+    <%=f.label :latitude%><br/>
+    <%=f.text_field :latitude, id: 'lat' ,class: "form-control"%>
+  </div>
+  <div class = "from-group mx-auto" style="width:200px">
+    <%=f.label :longitude%><br/>
+    <%=f.text_field :longitude, id: 'lng' ,class: "form-control"%>
+  </div>
+  <div class = "from-group col-md-6 mx-auto">
+    <%=f.label :area_type%><br/>
+    <%= f.select :area_type, options_for_select([["흡연구역", "흡연구역"],["단속구역", "단속구역"]]), :class => 'genForm_dropBox' %>
+  </div>
+  <div class = "from-group col-md-6 mx-auto">
+    <%=f.label :area_name%><br/>
+    <%=f.text_field :area_name,class: "form-control"%>
+  </div>
+  <div class = "from-group col-md-6 mx-auto">
+    <%=f.label :address%><br/>
+    <%=f.text_field :address,class: "form-control"%>
+  </div>
+  <div class = "from-group col-md-6 mx-auto">
+    <%=f.label :description%><br/>
+    <%=f.text_field :description,class: "form-control"%>
+  </div>
+  <div class = "from-group col-md-3 mx-auto">
+    <%=f.label :image_address%><br/>
+    <%=f.file_field :image_address,class: "form-control"%>
+  </div>
+  <br/>
+  <div class="actions">
+    <%= f.submit "등록하기",class: 'btn btn-primary'%>
+  </div>
+</div>
+<% end %>
+
